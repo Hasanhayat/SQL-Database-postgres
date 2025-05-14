@@ -7,3 +7,7 @@ const PORT = 3002;
 app.use(cors());
 app.use(express.json());
 
+app.get("/",()=>{
+    res.send("Hello from server")
+})
+
