@@ -13,6 +13,21 @@ app.use(express.json());
 app.get("/",()=>{
     res.send("Hello from server")
 })
+app.get("users",(req , res)=>{
+    
+})
+
+app.post("user",(req,res)=>{
+    const {name, email, password} = req.body;
+    db.query("INSERT INTO users (name, email, password) VALUES (?, ?, ?)", [name, email, password], (err, result) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send("Error inserting user");
+        } else {
+            res.status(201).send("User inserted successfully");
+        }
+    });
+})
 
 
 
