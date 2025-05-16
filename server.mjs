@@ -14,7 +14,15 @@ app.get("/",()=>{
     res.send("Hello from server")
 })
 app.get("users",(req , res)=>{
-    
+    db.query("SELECT * FROM users", (err, result) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send("Error fetching users");
+        } else {
+            res.json(result);
+        }
+    });    
+
 })
 
 app.post("user",(req,res)=>{
