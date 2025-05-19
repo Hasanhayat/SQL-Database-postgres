@@ -42,6 +42,46 @@ app.post("/user", (req, res) => {
   );
 });
 
+app.get("/user/:id", (req, res) => {
+  const userId = req.params.id;
+  db.query("SELECT * FROM users WHERE id = ?", [userId], (err, result) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send({ message: "Error fetching user" });
+    } else {
+      res.json({ user: result.rows[0] });
+    }
+  });
+});
+
+app.put("/user/:id", (req, res) => {
+  const userId = req.params.id;
+  const { name, email, password } = req.body;
+  db.query(
+    "UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?",
+    [name, email, password, userId],
+    (err, result) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send({ message: "Error updating user" });
+      } else {
+        res.send({ message: "User updated successfully" });
+      }
+    }
+  );
+});
+app.delete("/user/:id", (req, res) => {
+  const userId = req.params.id;
+  db.query("DELETE FROM users WHERE id = ?", [userId], (err, result) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send({ message: "Error deleting user" });
+    } else {
+      res.send({ message: "User deleted successfully" });
+    }
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
